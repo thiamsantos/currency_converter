@@ -8,7 +8,7 @@ use std::env;
 struct Arguments<'a> {
     base: &'a str,
     symbol: &'a str,
-    value: f64
+    value: f64,
 }
 
 #[derive(Deserialize)]
@@ -19,7 +19,7 @@ struct CurrencyRatesResponse {
 struct CurrencyRate<'a> {
     base: &'a str,
     symbol: &'a str,
-    rate: f64
+    rate: f64,
 }
 
 fn main() {
@@ -34,12 +34,11 @@ fn parse_arguments(args: &Vec<String>) -> Arguments {
     let arguments = Arguments {
         base: &args[1],
         symbol: &args[2],
-        value: args[3].parse::<f64>().unwrap()
+        value: args[3].parse::<f64>().unwrap(),
     };
 
     arguments
 }
-
 
 fn fetch_rate<'a>(arguments: &'a Arguments) -> CurrencyRate<'a> {
     let client = reqwest::Client::new();
@@ -54,7 +53,7 @@ fn fetch_rate<'a>(arguments: &'a Arguments) -> CurrencyRate<'a> {
     let currency_rate = CurrencyRate {
         base: arguments.base,
         symbol: arguments.symbol,
-        rate: rates.rates[arguments.symbol]
+        rate: rates.rates[arguments.symbol],
     };
 
     currency_rate
@@ -65,5 +64,8 @@ fn calculate_currency_value(value: f64, rate: f64) -> f64 {
 }
 
 fn show_report(arguments: &Arguments, currency_rate: &CurrencyRate, total: f64) {
-    println!("{:.2} {} worths {:.2} {}", arguments.value, currency_rate.base, total, currency_rate.symbol)
+    println!(
+        "{:.2} {} worths {:.2} {}",
+        arguments.value, currency_rate.base, total, currency_rate.symbol
+    )
 }
