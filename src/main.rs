@@ -30,14 +30,12 @@ fn main() {
     show_report(&parsed_arguments, &currency_rate, currency_value);
 }
 
-fn parse_arguments(args: &Vec<String>) -> Arguments {
-    let arguments = Arguments {
+fn parse_arguments(args: &[String]) -> Arguments {
+    Arguments {
         base: &args[1],
         symbol: &args[2],
         value: args[3].parse::<f64>().unwrap(),
-    };
-
-    arguments
+    }
 }
 
 fn fetch_rate<'a>(arguments: &'a Arguments) -> CurrencyRate<'a> {
@@ -50,13 +48,11 @@ fn fetch_rate<'a>(arguments: &'a Arguments) -> CurrencyRate<'a> {
 
     let rates: CurrencyRatesResponse = response.json().unwrap();
 
-    let currency_rate = CurrencyRate {
+    CurrencyRate {
         base: arguments.base,
         symbol: arguments.symbol,
         rate: rates.rates[arguments.symbol],
-    };
-
-    currency_rate
+    }
 }
 
 fn calculate_currency_value(value: f64, rate: f64) -> f64 {
